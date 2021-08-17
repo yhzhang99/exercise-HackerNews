@@ -33,6 +33,7 @@ export default {
       loading: false,
       busy: false,
       nowId: 0,
+      isSending: false,
     };
   },
   beforeMount() {
@@ -62,19 +63,20 @@ export default {
       this.nowId = this.nowId + 10;
       Promise.all(news).then((res) => {
         this.addData(res);
-        console.log(this.data);
+        this.isSending = false;
       });
     },
     handleInfiniteOnLoad() {
       const data = this.data;
       this.loading = true;
-      if (data.length > 100) {
+      if (data.length > 200) {
         this.$message.warning('Infinite List loaded all');
         this.busy = true;
         this.loading = false;
         return;
       }
-      if (this.id[0]) {
+      if (this.id[this.nowId] && !this.isSending) {
+        this.isSending = true;
         this.getNews();
       }
     },
@@ -116,5 +118,8 @@ export default {
   bottom: 40px;
   width: 100%;
   text-align: center;
+}
+.ant-spin-dot {
+  top: 70px;
 }
 </style>

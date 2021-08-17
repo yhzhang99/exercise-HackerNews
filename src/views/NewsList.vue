@@ -12,7 +12,7 @@
         </a-list-item-meta>
         <div>
           <a-icon type="message" /> {{ item.descendants }} comments
-          <br /><a-icon type="check" /> {{ item.score }} points
+          <br /><a-icon type="like" /> {{ item.score }} points
         </div>
       </a-list-item>
       <div v-if="loading && !busy" class="demo-loading-container">
@@ -102,9 +102,9 @@ export default {
 </script>
 <style>
 .ant-list-item {
-  background-color: #f2f7fa;
-  height: 60px;
-  padding: 5px;
+  background-color: #fff;
+  height: 82px;
+  padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
 }

@@ -34,8 +34,11 @@ export default {
 }
 
 h1 {
-  margin-top: 70px;
+  font-size: 32px;
+  padding-top: 70px;
+  padding-bottom: 30px;
   color: #3571fa;
+  background-color: #f2f7fa;
 }
 #main {
   color: #ce3273;
@@ -59,5 +62,8 @@ a:hover,
 a:active {
   text-decoration: none;
   color: inherit;
+}
+.router-link-active {
+  color: #099a56 !important;
 }
 </style>

@@ -17,6 +17,10 @@ export default {
 };
 </script>
 <style scoped>
+#app {
+  min-height: 100vh;
+  background-color: #f2f7fa;
+}
 #bd {
   height: 70px;
 }

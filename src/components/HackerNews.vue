@@ -35,10 +35,10 @@ export default {
 
 h1 {
   font-size: 32px;
-  padding-top: 70px;
-  padding-bottom: 30px;
+  padding-top: 30px;
+  padding-bottom: 10px;
   color: #3571fa;
-  background-color: #f2f7fa;
+  background-color: #f5f5f5;
 }
 #main {
   color: #ce3273;

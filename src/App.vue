@@ -19,7 +19,7 @@ export default {
 <style scoped>
 #app {
   min-height: 100vh;
-  background-color: #f2f7fa;
+  background-color: #f5f5f5;
 }
 #bd {
   height: 70px;

@@ -5,14 +5,14 @@
     :infinite-scroll-disabled="busy"
     :infinite-scroll-distance="10"
   >
-    <a-list :data-source="newsData">
-      <a-list-item slot="renderItem" slot-scope="item">
+    <a-list :data-source="data">
+      <a-list-item slot="renderItem" slot-scope="item, index" :key="index">
         <a-list-item-meta :description="timeConvert(item.time)">
-          <a slot="title" :href="item.href">{{ item.title }}</a>
+          <a slot="title" :href="item.url" target="blank">{{ item.title }}</a>
         </a-list-item-meta>
         <div>
-          <a-icon type="message" /> 615 comments <br /><a-icon type="check" />
-          1223 points
+          <a-icon type="message" /> {{ item.descendants }} comments
+          <br /><a-icon type="check" /> {{ item.score }} points
         </div>
       </a-list-item>
       <div v-if="loading && !busy" class="demo-loading-container">
@@ -22,40 +22,61 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex';
-import { mapActions } from 'vuex';
+import request from '../api/agent';
 import { mapState } from 'vuex';
-import reqwest from 'reqwest';
+import { mapMutations } from 'vuex';
 import infiniteScroll from 'vue-infinite-scroll';
-const fakeDataUrl =
-  'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
 export default {
   directives: { infiniteScroll },
   data() {
-    return {};
+    return {
+      loading: false,
+      busy: false,
+      nowId: 0,
+    };
   },
   beforeMount() {
-    this.getIdList();
+    this.fetchData();
   },
   methods: {
-    ...mapMutations(['changeLoading', 'changeBusy']),
-    ...mapActions(['getIdList']),
-
-    fetchData(callback) {
-      reqwest({
-        url: fakeDataUrl,
-        type: 'json',
-        method: 'get',
-        contentType: 'application/json',
-        success: (res) => {
-          callback(res);
-        },
+    ...mapMutations(['changeCh', 'addData', 'addId', 'changeTopic']),
+    fetchData() {
+      request
+        .get({
+          url: `${this.topic}stories.json`,
+        })
+        .then((response) => {
+          this.addId(response);
+          this.getNews();
+        });
+    },
+    getNews() {
+      let news = [];
+      for (let i = this.nowId; i < this.nowId + 10; i++) {
+        news.push(
+          request.get({
+            url: `item/${this.id[i]}.json?print=pretty`,
+          })
+        );
+      }
+      this.nowId = this.nowId + 10;
+      Promise.all(news).then((res) => {
+        this.addData(res);
+        console.log(this.data);
       });
     },
     handleInfiniteOnLoad() {
-      this.changeLoading(true);
-
-      this.getIdList();
+      const data = this.data;
+      this.loading = true;
+      if (data.length > 100) {
+        this.$message.warning('Infinite List loaded all');
+        this.busy = true;
+        this.loading = false;
+        return;
+      }
+      if (this.id[0]) {
+        this.getNews();
+      }
     },
     timeConvert(timestamp) {
       return new Date(parseInt(timestamp) * 1000)
@@ -63,9 +84,17 @@ export default {
         .replace(/:\d{1,2}$/, ' ');
     },
   },
-
   computed: {
-    ...mapState(['newsData', 'loading', 'busy']),
+    ...mapState(['topic', 'data', 'id']),
+  },
+  watch: {
+    $route(to) {
+      this.changeTopic(to.params.class);
+      this.fetchData((res) => {
+        this.addData(res);
+      });
+      this.nowId = 0;
+    },
   },
 };
 </script>
@@ -79,9 +108,8 @@ export default {
 .demo-infinite-container {
   width: 1110px;
   margin: 0 auto;
-
   padding: 8px 24px;
-  height: 300px;
+  height: 100%;
 }
 .demo-loading-container {
   position: absolute;

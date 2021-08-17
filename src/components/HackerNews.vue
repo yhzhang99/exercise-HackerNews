@@ -3,38 +3,25 @@
     <h1>Hacker News Headlins</h1>
     <div id="main">
       <ul>
-        <li @click="clearDa"><router-link to="/top">Top</router-link></li>
-        <li @click="clearDa"><router-link to="/best">Best</router-link></li>
-        <li @click="clearDa"><router-link to="/new">New</router-link></li>
-        <li @click="clearDa"><router-link to="/ask">Ask</router-link></li>
-        <li @click="clearDa"><router-link to="/show">Show</router-link></li>
-        <li @click="clearDa"><router-link to="/job">Job</router-link></li>
+        <li @click="clearDa"><router-link to="/top">🔥Top</router-link></li>
+        <li @click="clearDa"><router-link to="/best">👍Best</router-link></li>
+        <li @click="clearDa"><router-link to="/new">✨New</router-link></li>
+        <li @click="clearDa"><router-link to="/ask">🙋‍♀️Ask</router-link></li>
+        <li @click="clearDa"><router-link to="/show">📰Show</router-link></li>
+        <li @click="clearDa"><router-link to="/job">💼Job</router-link></li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
-import { mapState } from 'vuex';
 export default {
   methods: {
-    ...mapActions(['getIdList']),
-    ...mapMutations(['changeTopic', 'clearData']),
+    ...mapMutations(['clearData', 'changeCh']),
     clearDa() {
-      // this.clearData();
       this.clearData();
     },
-  },
-  watch: {
-    $route(to) {
-      this.changeTopic(to.params.class);
-      this.getIdList();
-    },
-  },
-  computed: {
-    ...mapState(['newsData', 'loading', 'id']),
   },
 };
 </script>

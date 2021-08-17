@@ -106,6 +106,7 @@ export default {
   height: 60px;
   padding: 5px;
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 .demo-infinite-container {
   width: 1110px;

@@ -10,7 +10,7 @@
         <a-list-item-meta :description="timeConvert(item.time)">
           <a slot="title" :href="item.url" target="blank">{{ item.title }}</a>
         </a-list-item-meta>
-        <div>
+        <div id="tap">
           <a-icon type="message" /> {{ item.descendants }} comments
           <br /><a-icon type="like" /> {{ item.score }} points
         </div>
@@ -122,5 +122,10 @@ export default {
 }
 .ant-spin-dot {
   top: 70px;
+}
+#tap {
+  position: absolute;
+  left: 950px;
+  text-align: left;
 }
 </style>

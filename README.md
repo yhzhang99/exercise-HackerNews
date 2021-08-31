@@ -1,5 +1,3 @@
-# examination3
-
 ## Project setup
 ```
 yarn install
